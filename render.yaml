@@ -3,9 +3,11 @@ services:
     name: farmers-backend
     env: node
     buildCommand: npm install && npm run build
-    startCommand: node dist/server.js
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
+      - key: DATABASE_URL
+        sync: false
