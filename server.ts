@@ -21,15 +21,28 @@ app.use(cors({
 
 // PostgreSQL connection
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_OwW87qKtcCfj@ep-aged-thunder-air0o94u-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
+  connectionString: process.env.DATABASE_URL,
 });
+
+// Check if DATABASE_URL is set
+if (!process.env.DATABASE_URL) {
+  console.error('❌ CRITICAL: DATABASE_URL environment variable is not set!');
+  process.exit(1);
+}
+
+console.log('🚀 Database URL configured:', process.env.DATABASE_URL ? 'YES' : 'NO');
 
 pool.on('connect', () => {
   console.log('✅ Connected to PostgreSQL - Production Ready');
 });
 
-pool.on('error', (err) => {
+pool.on('error', (err: any) => {
   console.error('❌ CRITICAL: PostgreSQL Connection Error:', err.message);
+  console.error('Error details:', {
+    code: err.code,
+    syscall: err.syscall,
+    hostname: err.hostname
+  });
 });
 
 // Initialize tables if they don't exist
