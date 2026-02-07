@@ -20,6 +20,10 @@ import GraduatePortal from './components/GraduatePortal';
 import LandingPage from './components/LandingPage';
 import Auth from './components/Auth';
 import HiddenAdmin from './components/HiddenAdmin';
+import TermsAndConditions from './components/TermsAndConditions';
+import ContactUs from './components/ContactUs';
+import AboutUs from './components/AboutUs';
+import Disclaimer from './components/Disclaimer';
 import { api } from './api';
 
 const App: React.FC = () => {
@@ -31,6 +35,11 @@ const App: React.FC = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [initialRole, setInitialRole] = useState<Role>('buyer');
   const [isDbConnected, setIsDbConnected] = useState<boolean | null>(null);
+  // State for modal popups
+  const [showTerms, setShowTerms] = useState(false);
+  const [showContact, setShowContact] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
 
   // Check Database Connection on startup
   useEffect(() => {
@@ -104,6 +113,23 @@ const App: React.FC = () => {
         onLoginSuccess={handleAuthSuccess} 
         isLoggedIn={currentUser?.role === 'admin'} 
       />
+      
+      {/* Modal Components */}
+      {showTerms && (
+        <TermsAndConditions onClose={() => setShowTerms(false)} />
+      )}
+
+      {showContact && (
+        <ContactUs onClose={() => setShowContact(false)} />
+      )}
+
+      {showAbout && (
+        <AboutUs onClose={() => setShowAbout(false)} />
+      )}
+
+      {showDisclaimer && (
+        <Disclaimer onClose={() => setShowDisclaimer(false)} />
+      )}
       
       {/* Navigation */}
       <nav className="bg-emerald-900 text-white shadow-xl sticky top-0 z-50">
@@ -213,6 +239,32 @@ const App: React.FC = () => {
                 {isDbConnected ? 'Real-time Atlas Cloud Enabled' : 'Local Persistence Sync'}
              </span>
           </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 py-4 border-t border-emerald-900/50 mt-6 flex flex-wrap justify-center gap-6">
+          <button 
+            onClick={() => setShowAbout(true)}
+            className="text-[10px] font-bold uppercase tracking-widest text-emerald-400/70 hover:text-emerald-300 transition-colors"
+          >
+            About Us
+          </button>
+          <button 
+            onClick={() => setShowTerms(true)}
+            className="text-[10px] font-bold uppercase tracking-widest text-emerald-400/70 hover:text-emerald-300 transition-colors"
+          >
+            Terms and Conditions
+          </button>
+          <button 
+            onClick={() => setShowContact(true)}
+            className="text-[10px] font-bold uppercase tracking-widest text-emerald-400/70 hover:text-emerald-300 transition-colors"
+          >
+            Contact Us
+          </button>
+          <button 
+            onClick={() => setShowDisclaimer(true)}
+            className="text-[10px] font-bold uppercase tracking-widest text-emerald-400/70 hover:text-emerald-300 transition-colors"
+          >
+            Disclaimer
+          </button>
         </div>
         <div className="text-center py-4 border-t border-emerald-900/50 mt-6">
           <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400/70">
